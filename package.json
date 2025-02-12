@@ -17,8 +17,5 @@
     "url": "https://github.com/code-Alireza-code/freelancing-app-react/issues"
   },
   "homepage": "https://github.com/code-Alireza-code/freelancing-app-react#readme",
-  "description": "",
-  "dependencies": {
-    "react-router-dom": "^7.1.5"
-  }
+  "description": ""
 }

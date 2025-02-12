@@ -1,7 +1,15 @@
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import Auth from "./pages/Auth";
 
 function App() {
-  return <div className="text-lg text-center">freelancing App start</div>;
+  return (
+    <div className="container">
+      <Routes>
+        <Route path="/auth" element={<Auth />} />
+      </Routes>
+    </div>
+  );
 }
 
 export default App;
