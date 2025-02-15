@@ -28,7 +28,6 @@ function SendOTPForm({ setPhoneNumber, setStep }: SendOTPFormPropsType) {
   const handleSendOTP = async (formData: SendOTPFormDataType) => {
     try {
       const data = await mutateAsync(formData);
-      console.log(data);
       toast.success(data.message);
       setPhoneNumber(formData.phoneNumber);
       setStep(2);

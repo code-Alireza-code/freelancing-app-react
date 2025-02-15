@@ -13,7 +13,9 @@ function AuthContainer() {
           <SendOTPForm setPhoneNumber={setPhoneNumber} setStep={setStep} />
         );
       case 2:
-        return <CheckOTPForm phoneNumber={phoneNumber} />;
+        return (
+          <CheckOTPForm phoneNumber={phoneNumber} onBack={() => setStep(1)} />
+        );
       default:
         return null;
     }
