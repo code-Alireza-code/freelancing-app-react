@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { getOtpAPI } from "../../services/authService";
 import toast from "react-hot-toast";
 import { BackendError } from "../../types/error";
+import Loading from "../../ui/Loading";
 
 type SendOTPFormPropsType = {
   setPhoneNumber: (phoneNumber: string) => void;
@@ -22,7 +23,7 @@ function SendOTPForm({ setPhoneNumber, setStep }: SendOTPFormPropsType) {
     formState: { errors },
     handleSubmit,
   } = useForm<SendOTPFormDataType>({ resolver: zodResolver(validationSchema) });
-  const { mutateAsync } = useMutation({ mutationFn: getOtpAPI });
+  const { mutateAsync, isPending } = useMutation({ mutationFn: getOtpAPI });
 
   const handleSendOTP = async (formData: SendOTPFormDataType) => {
     try {
@@ -62,9 +63,13 @@ function SendOTPForm({ setPhoneNumber, setStep }: SendOTPFormPropsType) {
             {errors.phoneNumber.message}
           </span>
         )}
-        <button type="submit" className="btn btn--primary w-full">
-          ورود
-        </button>
+        {isPending ? (
+          <Loading />
+        ) : (
+          <button type="submit" className={`btn btn--primary w-full `}>
+            ورود
+          </button>
+        )}
       </form>
     </div>
   );
