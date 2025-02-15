@@ -2,27 +2,42 @@ import { useForm } from "react-hook-form";
 import TextField from "../../ui/TextField";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { getOtpAPI } from "../../services/authService";
+import toast from "react-hot-toast";
+import { BackendError } from "../../types/error";
 
-type SendOTPFormDataType = z.infer<typeof validationSchema>;
-
+type SendOTPFormPropsType = {
+  setPhoneNumber: (phoneNumber: string) => void;
+  setStep: (step: number) => void;
+};
 const validationSchema = z.object({
   phoneNumber: z.string().nonempty("*لطفا این قسمت را خالی نگذارید"),
 });
+type SendOTPFormDataType = z.infer<typeof validationSchema>;
 
-function SendOTPForm({
-  handleSendOTP,
-}: {
-  handleSendOTP: ({ phoneNumber }: { phoneNumber: string }) => void;
-}) {
+function SendOTPForm({ setPhoneNumber, setStep }: SendOTPFormPropsType) {
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<SendOTPFormDataType>({ resolver: zodResolver(validationSchema) });
-  console.log(errors);
-  // const handleSendOTP = (formData: SendOTPFormDataType) => {
-  //   console.log(formData);
-  // };
+  const { mutateAsync } = useMutation({ mutationFn: getOtpAPI });
+
+  const handleSendOTP = async (formData: SendOTPFormDataType) => {
+    try {
+      const data = await mutateAsync(formData);
+      console.log(data);
+      toast.success(data.message);
+      setPhoneNumber(formData.phoneNumber);
+      setStep(2);
+    } catch (error) {
+      const err = error as BackendError;
+      toast.error(
+        err?.response?.data?.message || "خطا در هنگام ارسال کد تایید"
+      );
+    }
+  };
 
   return (
     <div className="w-full sm:max-w-sm justify-center">
