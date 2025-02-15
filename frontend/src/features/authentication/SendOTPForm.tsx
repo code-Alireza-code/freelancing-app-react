@@ -9,16 +9,20 @@ const validationSchema = z.object({
   phoneNumber: z.string().nonempty("*لطفا این قسمت را خالی نگذارید"),
 });
 
-function SendOTPForm() {
+function SendOTPForm({
+  handleSendOTP,
+}: {
+  handleSendOTP: ({ phoneNumber }: { phoneNumber: string }) => void;
+}) {
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<SendOTPFormDataType>({ resolver: zodResolver(validationSchema) });
   console.log(errors);
-  const handleSendOTP = (formData: SendOTPFormDataType) => {
-    console.log(formData);
-  };
+  // const handleSendOTP = (formData: SendOTPFormDataType) => {
+  //   console.log(formData);
+  // };
 
   return (
     <div className="w-full sm:max-w-sm justify-center">

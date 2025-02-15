@@ -12,7 +12,7 @@ type CheckOTPFormDataType = {
   otp: string;
 };
 
-function CheckOTPForm() {
+function CheckOTPForm({ phoneNumber }: { phoneNumber: string }) {
   const {
     register,
     formState: { errors },
@@ -38,7 +38,9 @@ function CheckOTPForm() {
           </button>
         </div>
         <div className="font-bold mb-8 text-lg">کد تایید را وارد کنید</div>
-        <div className="text-sm mb-4">کد تایید برای شماره x پیامک شد</div>
+        <div className="text-sm mb-4">
+          کد تایید برای شماره {phoneNumber} پیامک شد
+        </div>
         <form
           noValidate
           onSubmit={handleSubmit(handleCheckOTP)}
@@ -49,7 +51,7 @@ function CheckOTPForm() {
             type="number"
             {...register("otp")}
             className={`${errors["otp"] && "border border-error"}`}
-            placeholder="شماره خود را وارد کنید..."
+            placeholder="کد تایید را وارد کنید"
           />
           {errors["otp"] && (
             <span className="text-xs text-error">{errors.otp.message}</span>
