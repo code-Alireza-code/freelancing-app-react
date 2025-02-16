@@ -38,9 +38,16 @@ function CompleteProfileForm() {
     formData: CompleteProfileFormDataType
   ) => {
     try {
-      const data = await mutateAsync(formData);
-      toast.success(data.message);
-      //# push user to related route based on isActive
+      const { user, message } = await mutateAsync(formData);
+      toast.success(message);
+      if (user.status !== 2) {
+        navigate("/");
+        toast("پروفایل شما در انتظار تایید است !");
+        return;
+      }
+      if (user.role === "OWNER") return navigate("/owner", { replace: true });
+      if (user.role === "FREELANCER")
+        return navigate("/freelancer", { replace: true });
     } catch (error) {
       toast.error(
         (error as BackendError)?.response?.data?.message ||

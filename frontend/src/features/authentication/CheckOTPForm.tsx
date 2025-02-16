@@ -48,12 +48,16 @@ function CheckOTPForm({ phoneNumber, onBack }: CheckOTPFormPropsType) {
         phoneNumber,
       });
       toast.success(message);
-      if (user.isActive) {
-        if (user.role === "OWNER") return navigate("/owner", { replace: true });
-        else if (user.role === "FREELANCER")
-          return navigate("/FREELANCER", { replace: true });
+      if (!user.isActive)
+        return navigate("/complete-profile", { replace: true });
+      if (user.status !== 2) {
+        navigate("/");
+        toast("پروفایل شما در انتظار تایید است !");
+        return;
       }
-      navigate("/complete-profile", { replace: true });
+      if (user.role === "OWNER") return navigate("/owner", { replace: true });
+      if (user.role === "FREELANCER")
+        return navigate("/freelancer", { replace: true });
     } catch (error) {
       const err = error as BackendError;
       toast.error(
