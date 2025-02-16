@@ -1,22 +1,24 @@
 import { HTMLInputTypeAttribute } from "react";
 
 type TextFieldPropsType = {
-  label: string;
+  label?: string;
   type?: HTMLInputTypeAttribute;
   name: string;
   id?: string;
-  rest?: unknown;
+  rest?: React.InputHTMLAttributes<HTMLInputElement>;
   className?: string;
   placeholder?: string;
+  dir?: "ltr" | "rtl";
 };
 
 function TextField({
-  label,
+  label = "",
   type = "text",
   name,
   id = "",
   className = "",
   placeholder,
+  dir = "rtl",
   ...rest
 }: TextFieldPropsType) {
   return (
@@ -29,9 +31,10 @@ function TextField({
         type={type}
         name={name}
         id={id || name}
+        dir={dir}
         autoComplete="off"
         placeholder={placeholder}
-        {...(rest as React.InputHTMLAttributes<HTMLInputElement>)}
+        {...rest}
       />
     </div>
   );
