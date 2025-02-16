@@ -14,6 +14,7 @@ function withOpacity(variableName) {
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}", "./src/*.{ts,tsx}"],
   darkMode: ["class", '[class="dark-mode"]'],
+  plugins: [require("@tailwindcss/forms")({ strategy: "class" })],
   theme: {
     extend: {
       colors: {
