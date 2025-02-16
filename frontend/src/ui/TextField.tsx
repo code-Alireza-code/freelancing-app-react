@@ -2,7 +2,7 @@ import { HTMLInputTypeAttribute } from "react";
 
 type TextFieldPropsType = {
   label: string;
-  type: HTMLInputTypeAttribute;
+  type?: HTMLInputTypeAttribute;
   name: string;
   id?: string;
   rest?: unknown;
