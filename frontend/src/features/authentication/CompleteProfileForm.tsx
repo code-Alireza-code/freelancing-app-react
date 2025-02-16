@@ -3,6 +3,11 @@ import TextField from "../../ui/TextField";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import RadioInput from "../../ui/RadioInput";
+import { useMutation } from "@tanstack/react-query";
+import { completeProfileAPI } from "../../services/authService";
+import toast from "react-hot-toast";
+import { BackendError } from "../../types/error";
+import Loading from "../../ui/Loading";
 
 const validationSchema = z.object({
   name: z.string().nonempty("نام و نام خانوادگی الزامی است !"),
@@ -10,27 +15,42 @@ const validationSchema = z.object({
     .string()
     .nonempty("ایمیل الزامی است !")
     .email("ایمیل وارد شده معتبر نیست !"),
-  role: z.string().nonempty("نقش را انتخاب کنید !"),
+  role: z.enum(["OWNER", "FREELANCER", ""], {
+    message: "نقش را انتخاب کنید !",
+  }),
 });
 
-type CompleteProfileFormDataType = z.infer<typeof validationSchema>;
+export type CompleteProfileFormDataType = z.infer<typeof validationSchema>;
 
 function CompleteProfileForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<CompleteProfileFormDataType>({
     resolver: zodResolver(validationSchema),
-    defaultValues: { role: "", name: "", email: "" },
+  });
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: completeProfileAPI,
   });
 
-  const handleCompleteProfile = (formData: CompleteProfileFormDataType) => {
-    console.log(formData);
+  const handleCompleteProfile = async (
+    formData: CompleteProfileFormDataType
+  ) => {
+    try {
+      const data = await mutateAsync(formData);
+      toast.success(data.message);
+      //# push user to related route based on isActive
+    } catch (error) {
+      toast.error(
+        (error as BackendError)?.response?.data?.message ||
+          "خطا در هنگام ارسال اطلاعات به سرور"
+      );
+    }
   };
 
   return (
-    <div className="w-[500px] p-10 border h-fit mt-10 border-gray-200 rounded-lg">
+    <div className="w-[500px] p-10 border mt-10 border-gray-200 rounded-lg">
       <h1 className="text-2xl text-center mb-10">اطلاعات خود را تکمیل کنید</h1>
       <form
         noValidate
@@ -59,7 +79,7 @@ function CompleteProfileForm() {
             <RadioInput label="کارفرما" value="OWNER" {...register("role")} />
             <RadioInput
               label="فریلنسر"
-              value="freelancer"
+              value="FREELANCER"
               {...register("role")}
             />
           </div>
@@ -69,7 +89,13 @@ function CompleteProfileForm() {
             </span>
           )}
         </div>
-        <button className="btn btn--primary w-full">تایید اطلاعات</button>
+        {isPending ? (
+          <Loading />
+        ) : (
+          <button type="submit" className={`btn btn--primary w-full `}>
+            تایید اطلاعات
+          </button>
+        )}
       </form>
     </div>
   );
