@@ -10,6 +10,7 @@ import { BackendError } from "../../types/error";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loading from "../../ui/Loading";
+import { MdEdit } from "react-icons/md";
 
 const validationSchema = z.object({
   otp: z.string().nonempty("کد تایید را وارد کنید"),
@@ -97,8 +98,16 @@ function CheckOTPForm({ phoneNumber, onBack }: CheckOTPFormPropsType) {
         </button>
       </div>
       <div className="font-bold mb-8 text-lg">کد تایید را وارد کنید</div>
-      <div className="text-sm mb-4">
-        کد تایید برای شماره {phoneNumber} پیامک شد
+      <div className="text-sm mb-4 flex items-center">
+        کد تایید برای شماره {phoneNumber} پیامک شد.&nbsp;
+        <button
+          type="button"
+          className="underline flex text-primary-900 p-0.5"
+          onClick={onBack}
+        >
+          ویرایش
+          <MdEdit className="w-4 h-4" />
+        </button>
       </div>
       <form
         noValidate
