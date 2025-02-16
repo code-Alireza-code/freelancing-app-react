@@ -50,8 +50,8 @@ function CheckOTPForm({ phoneNumber, onBack }: CheckOTPFormPropsType) {
       toast.success(message);
       if (user.isActive) {
         if (user.role === "OWNER") return navigate("/owner", { replace: true });
-        else if (user.role === "ADMIN")
-          return navigate("/admin", { replace: true });
+        else if (user.role === "FREELANCER")
+          return navigate("/FREELANCER", { replace: true });
       }
       navigate("/complete-profile", { replace: true });
     } catch (error) {
