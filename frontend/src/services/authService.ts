@@ -14,3 +14,7 @@ export async function completeProfileAPI(data: CompleteProfileFormDataType) {
     .post("/user/complete-profile", data)
     .then(({ data }) => data.data);
 }
+
+export async function getUserProfileAPI() {
+  return http.get("/user/profile").then(({ data }) => data.data);
+}
