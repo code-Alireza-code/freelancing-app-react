@@ -1,8 +1,14 @@
+import { FaRegTrashAlt } from "react-icons/fa";
 import { ProjectType } from "../../types/projects";
 import Table from "../../ui/Table";
 import toLocaleDateShort from "../../utils/toLocalDateShort";
 import { toPersianNumbersWithComma } from "../../utils/toPersianNumbers";
 import truncateText from "../../utils/truncateText";
+import { MdOutlineEdit } from "react-icons/md";
+import Modal from "../../ui/Modal";
+import { useState } from "react";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import { useRemoveProject } from "./useProject";
 
 type ProjectRowPropsType = {
   project: ProjectType;
@@ -10,6 +16,13 @@ type ProjectRowPropsType = {
 };
 
 function ProjectRow({ project, index }: ProjectRowPropsType) {
+  const [isRemoveOpen, setIsRemoveOpen] = useState(false);
+  const { isDeleting, removeProject } = useRemoveProject();
+
+  const handleRemoveProject = async (projectId: string) => {
+    await removeProject(projectId);
+  };
+
   return (
     <Table.Row>
       <td>{index + 1}</td>
@@ -34,7 +47,25 @@ function ProjectRow({ project, index }: ProjectRowPropsType) {
           <span className="badge badge--danger">بسته</span>
         )}
       </td>
-      <td>عملیات...</td>
+      <td>
+        <div className="flex gap-x-4 justify-center items-center">
+          <button onClick={() => setIsRemoveOpen(true)}>
+            <FaRegTrashAlt className="w-5 h-5 text-error" />
+          </button>
+          <Modal
+            title={`حذف ${project.title}`}
+            open={isRemoveOpen}
+            onClose={() => setIsRemoveOpen(false)}
+          >
+            <ConfirmDelete
+              resourceName={project.title}
+              onClose={() => setIsRemoveOpen(false)}
+              onConfirm={() => handleRemoveProject(project._id)}
+              disabled={isDeleting}
+            />
+          </Modal>
+        </div>
+      </td>
     </Table.Row>
   );
 }
