@@ -6,13 +6,20 @@ import { TagsInput } from "react-tag-input-component";
 import DatePickerField from "../../ui/DatePickerField";
 import Select from "../../ui/Select";
 import { useGetAllCategories } from "../../hooks/useCategories";
+import { useCreateProject } from "./useProject";
+import Loading from "../../ui/Loading";
+import { toEnglishNumbers } from "../../utils/toEnglishNumbers";
 
 const validationSchema = z.object({
   title: z.string().nonempty("عنوان را خالی نگذارید"),
   description: z.string().nonempty("توضیحات را خالی نگذارید"),
   budget: z
-    .number({ message: "بودجه را وارد کنید" })
-    .nonnegative("بودجه نباید منفی باشد !"),
+    .string()
+    .nonempty("بودجه را وارد کنید")
+    .transform((val) => parseFloat(toEnglishNumbers(val)))
+    .refine((val) => !isNaN(val) && val >= 100_000, {
+      message: "بودجه کمتر از ۱۰۰ هزار تومان مقدور نیست !",
+    }),
   tags: z.array(z.string()).optional(),
   category: z.string().nonempty("دسته بندی را انتخاب کنید"),
   deadline: z.string({ required_error: "تاریخ ددلاین را وارد کنید" }),
@@ -20,7 +27,7 @@ const validationSchema = z.object({
 
 export type AddProjectFormDataType = z.infer<typeof validationSchema>;
 
-function CreateProjectForm() {
+function CreateProjectForm({ onClose }: { onClose: () => void }) {
   const {
     register,
     handleSubmit,
@@ -31,10 +38,12 @@ function CreateProjectForm() {
   });
   const { data } = useGetAllCategories();
   const { categories } = data || {};
-  console.log(categories);
 
-  const handleAddProject = (formData: AddProjectFormDataType) => {
-    console.log(formData);
+  const { createProject, isCreating } = useCreateProject();
+
+  const handleAddProject = async (formData: AddProjectFormDataType) => {
+    await createProject(formData);
+    onClose();
   };
 
   return (
@@ -50,9 +59,8 @@ function CreateProjectForm() {
         errors={errors}
       />
       <TextField
-        {...register("budget", { valueAsNumber: true })}
+        {...register("budget")}
         label="بودجه پروژه"
-        type="number"
         dir="ltr"
         errors={errors}
       />
@@ -80,11 +88,15 @@ function CreateProjectForm() {
         control={control}
         name="deadline"
       />
-      <button className="btn btn--primary w-full" type="submit">
-        ایجاد پروژه
-      </button>
+      {isCreating ? (
+        <Loading />
+      ) : (
+        <button type="submit" className={`btn btn--primary w-full `}>
+          ایجاد پروژه
+        </button>
+      )}
     </form>
   );
 }
 
-export default CreateProjectForm; 
+export default CreateProjectForm;

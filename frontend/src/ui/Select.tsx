@@ -33,7 +33,7 @@ function Select({
           className={`textField__input ${className}`}
         >
           <option value="">یک دسته بندی انتخاب کنید</option>
-          {options.map((option) => (
+          {options?.map((option) => (
             <option key={option._id} value={option._id}>
               {option.title}
             </option>

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  createProjectAPI,
   getAllProjectsAPI,
   removeProjectAPI,
 } from "../../services/projectService";
@@ -26,4 +27,23 @@ export const useRemoveProject = () => {
   });
 
   return { removeProject, isDeleting };
+};
+
+export const useCreateProject = () => {
+  const queryClient = useQueryClient();
+  const { isPending: isCreating, mutateAsync: createProject } = useMutation({
+    mutationFn: createProjectAPI,
+    onSuccess(data) {
+      toast.success(data.message);
+      queryClient.invalidateQueries({ queryKey: ["owner-projects"] });
+    },
+    onError(error: unknown) {
+      toast.error(
+        (error as BackendError)?.response?.data?.message ||
+          "خطا در هنگام افزودن پروژه !"
+      );
+    },
+  });
+
+  return { createProject, isCreating };
 };
