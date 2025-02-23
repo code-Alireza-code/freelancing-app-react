@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { TagsInput } from "react-tag-input-component";
 import DatePickerField from "../../ui/DatePickerField";
+import Select from "../../ui/Select";
+import { useGetAllCategories } from "../../hooks/useCategories";
 
 const validationSchema = z.object({
   title: z.string().nonempty("عنوان را خالی نگذارید"),
@@ -12,6 +14,7 @@ const validationSchema = z.object({
     .number({ message: "بودجه را وارد کنید" })
     .nonnegative("بودجه نباید منفی باشد !"),
   tags: z.array(z.string()).optional(),
+  category: z.string().nonempty("دسته بندی را انتخاب کنید"),
   deadline: z.string({ required_error: "تاریخ ددلاین را وارد کنید" }),
 });
 
@@ -26,6 +29,9 @@ function CreateProjectForm() {
   } = useForm<AddProjectFormDataType>({
     resolver: zodResolver(validationSchema),
   });
+  const { data } = useGetAllCategories();
+  const { categories } = data || {};
+  console.log(categories);
 
   const handleAddProject = (formData: AddProjectFormDataType) => {
     console.log(formData);
@@ -48,6 +54,12 @@ function CreateProjectForm() {
         label="بودجه پروژه"
         type="number"
         dir="ltr"
+        errors={errors}
+      />
+      <Select
+        label="دسته بندی"
+        options={categories}
+        {...register("category")}
         errors={errors}
       />
       <div>
@@ -75,4 +87,4 @@ function CreateProjectForm() {
   );
 }
 
-export default CreateProjectForm;
+export default CreateProjectForm; 
