@@ -4,7 +4,6 @@ import Table from "../../ui/Table";
 import toLocaleDateShort from "../../utils/toLocalDateShort";
 import { toPersianNumbersWithComma } from "../../utils/toPersianNumbers";
 import truncateText from "../../utils/truncateText";
-import { MdOutlineEdit } from "react-icons/md";
 import Modal from "../../ui/Modal";
 import { useState } from "react";
 import ConfirmDelete from "../../ui/ConfirmDelete";
