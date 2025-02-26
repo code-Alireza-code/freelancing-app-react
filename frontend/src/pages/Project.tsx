@@ -7,14 +7,13 @@ import ProposalsTable from "../features/project/ProposalsTable";
 function Project() {
   const { id } = useParams();
   const { project, isLoadingProject } = useGetSingleProject(id as string);
-  console.log(project);
 
   if (isLoadingProject) return <Loading />;
 
   return (
     <div>
-      <ProjectHeader />
-      <ProposalsTable />
+      <ProjectHeader projectTitle={project.title} />
+      <ProposalsTable proposals={project.proposals} />
     </div>
   );
 }

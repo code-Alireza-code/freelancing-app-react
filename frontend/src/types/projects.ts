@@ -15,7 +15,7 @@ export interface ProjectType {
   };
   budget: number;
   tags: string[] | [];
-  proposals: string[] | [];
+  proposals: Proposal[] | [];
   deadline: string;
   createdAt: string;
   updatedAt: string;
@@ -24,4 +24,19 @@ export interface ProjectType {
     name: string;
     avatarUrl: null | string;
   };
+}
+
+export interface Proposal {
+  _id: string;
+  price: number;
+  duration: number;
+  description: string;
+  user?: {
+    _id?: string;
+    name?: string;
+    avatarUrl?: null | string;
+  };
+  status: 0 | 1 | 2;
+  createdAt: string;
+  updatedAt: string;
 }
