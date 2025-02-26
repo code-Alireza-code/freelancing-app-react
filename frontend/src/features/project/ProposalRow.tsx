@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { Proposal } from "../../types/projects";
+import Modal from "../../ui/Modal";
 import Table from "../../ui/Table";
 import {
   toPersianNumbers,
   toPersianNumbersWithComma,
 } from "../../utils/toPersianNumbers";
 import truncateText from "../../utils/truncateText";
+import ChangeProposalStatus from "./ChangeProposalStatus";
 
 const statusStyle = [
   {
@@ -27,6 +30,7 @@ type ProposalRowPropsType = {
 };
 
 function ProposalRow({ proposal, index }: ProposalRowPropsType) {
+  const [open, setOpen] = useState(false);
   return (
     <Table.Row>
       <td>{index + 1}</td>
@@ -41,7 +45,24 @@ function ProposalRow({ proposal, index }: ProposalRowPropsType) {
           {statusStyle[proposal.status].label}
         </span>
       </td>
-      <td>*</td>
+      <td>
+        <button
+          onClick={() => setOpen(true)}
+          className="underline underline-offset-4 text-primary-900 hover:text-primary-600"
+        >
+          تغییر وضعیت
+        </button>
+        <Modal
+          title="تغییر وضعیت درخواست"
+          onClose={() => setOpen(false)}
+          open={open}
+        >
+          <ChangeProposalStatus
+            proposalId={proposal._id}
+            onClose={() => setOpen(false)}
+          />
+        </Modal>
+      </td>
     </Table.Row>
   );
 }
