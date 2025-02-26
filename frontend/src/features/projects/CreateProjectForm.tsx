@@ -6,20 +6,22 @@ import { TagsInput } from "react-tag-input-component";
 import DatePickerField from "../../ui/DatePickerField";
 import Select from "../../ui/Select";
 import { useGetAllCategories } from "../../hooks/useCategories";
-import { useCreateProject } from "./useProject";
+import { useCreateProject, useEditProject } from "./useProject";
 import Loading from "../../ui/Loading";
 import { toEnglishNumbers } from "../../utils/toEnglishNumbers";
+import { ProjectType } from "../../types/projects";
 
 const validationSchema = z.object({
   title: z.string().nonempty("عنوان را خالی نگذارید"),
   description: z.string().nonempty("توضیحات را خالی نگذارید"),
   budget: z
-    .string()
+    .string({ message: "فرمت وارد شده اشتباه است" })
     .nonempty("بودجه را وارد کنید")
     .transform((val) => parseFloat(toEnglishNumbers(val)))
-    .refine((val) => !isNaN(val) && val >= 100_000, {
+    .refine((val) => val >= 100_000, {
       message: "بودجه کمتر از ۱۰۰ هزار تومان مقدور نیست !",
-    }),
+    })
+    .transform((val) => val.toString()),
   tags: z.array(z.string()).optional(),
   category: z.string().nonempty("دسته بندی را انتخاب کنید"),
   deadline: z.string({ required_error: "تاریخ ددلاین را وارد کنید" }),
@@ -27,7 +29,12 @@ const validationSchema = z.object({
 
 export type AddProjectFormDataType = z.infer<typeof validationSchema>;
 
-function CreateProjectForm({ onClose }: { onClose: () => void }) {
+type CreateProjectFormPropsType = {
+  onClose: () => void;
+  project?: ProjectType;
+};
+
+function CreateProjectForm({ onClose, project }: CreateProjectFormPropsType) {
   const {
     register,
     handleSubmit,
@@ -35,15 +42,37 @@ function CreateProjectForm({ onClose }: { onClose: () => void }) {
     formState: { errors },
   } = useForm<AddProjectFormDataType>({
     resolver: zodResolver(validationSchema),
+    defaultValues: {
+      title: project?.title || "",
+      budget: project?.budget.toString() || "",
+      tags: project?.tags || [],
+      category: project?.category._id || "",
+      description: project?.description || "",
+      deadline: project?.deadline || "",
+    },
   });
+
   const { data } = useGetAllCategories();
   const { categories } = data || {};
+
+  const editMode = Boolean(project);
+  const { editProject, isEditing } = useEditProject();
 
   const { createProject, isCreating } = useCreateProject();
 
   const handleAddProject = async (formData: AddProjectFormDataType) => {
-    await createProject(formData);
-    onClose();
+    if (editMode) {
+      await editProject(
+        { data: formData, projectId: project!._id },
+        {
+          onSuccess: () => onClose(),
+        }
+      );
+    } else {
+      await createProject(formData, {
+        onSuccess: () => onClose(),
+      });
+    }
   };
 
   return (
@@ -88,11 +117,11 @@ function CreateProjectForm({ onClose }: { onClose: () => void }) {
         control={control}
         name="deadline"
       />
-      {isCreating ? (
+      {isCreating || isEditing ? (
         <Loading />
       ) : (
         <button type="submit" className={`btn btn--primary w-full `}>
-          ایجاد پروژه
+          {editMode ? "ویرایش پروژه" : "ایجاد پروژه"}
         </button>
       )}
     </form>

@@ -13,3 +13,14 @@ export async function createProjectAPI(data: AddProjectFormDataType) {
   return http.post("/project/add", data).then(({ data }) => data.data);
 }
 
+export async function editProjectAPI({
+  data,
+  projectId,
+}: {
+  data: AddProjectFormDataType;
+  projectId: string;
+}) {
+  return http
+    .patch(`project/update/${projectId}`, data)
+    .then(({ data }) => data.data);
+}
