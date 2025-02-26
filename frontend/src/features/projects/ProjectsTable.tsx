@@ -2,7 +2,7 @@ import { ProjectType } from "../../types/projects";
 import Empty from "../../ui/Empty";
 import Loading from "../../ui/Loading";
 import Table from "../../ui/Table";
-import { useOwnerProjects } from "./useProject";
+import { useOwnerProjects } from "./useProjects";
 import ProjectRow from "./ProjectRow";
 
 function ProjectsTable() {
@@ -24,6 +24,7 @@ function ProjectsTable() {
         <th>فریلنسر</th>
         <th>وضعیت</th>
         <th>عملیات</th>
+        <th>درخواست ها</th>
       </Table.Header>
       <Table.Body>
         {(projects as ProjectType[]).map((project, index) => (

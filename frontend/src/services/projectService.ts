@@ -37,3 +37,7 @@ export async function updateProjectStatusAPI({
     .patch(`/project/${projectId}`, data)
     .then(({ data }) => data.data);
 }
+
+export async function getSingleProjectAPI(projectId: string) {
+  return http.get(`/project/${projectId}`).then(({ data }) => data.data);
+}

@@ -7,10 +7,12 @@ import truncateText from "../../utils/truncateText";
 import Modal from "../../ui/Modal";
 import { useState } from "react";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import { useRemoveProject } from "./useProject";
+import { useRemoveProject } from "./useProjects";
 import { TbPencilMinus } from "react-icons/tb";
 import CreateProjectForm from "./CreateProjectForm";
 import ToggleProjectStatus from "./ToggleProjectStatus";
+import { Link } from "react-router-dom";
+import { HiEye } from "react-icons/hi2";
 
 type ProjectRowPropsType = {
   project: ProjectType;
@@ -81,6 +83,11 @@ function ProjectRow({ project, index }: ProjectRowPropsType) {
             </Modal>
           </>
         </div>
+      </td>
+      <td>
+        <Link to={project._id} className="flex items-center justify-center">
+          <HiEye className="size-5 text-primary-900 hover:text-primary-600" />
+        </Link>
       </td>
     </Table.Row>
   );
