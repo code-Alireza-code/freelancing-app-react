@@ -1,6 +1,7 @@
 import { ReactNode, RefObject } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import useOutsideClick from "../hooks/useOutsideClick";
+import { createPortal } from "react-dom";
 
 type ModalPropsType = {
   open: boolean;
@@ -12,7 +13,8 @@ type ModalPropsType = {
 function Modal({ open, children, onClose, title }: ModalPropsType) {
   const ref = useOutsideClick(onClose);
   return (
-    open && (
+    open &&
+    createPortal(
       <div className="backdrop-blur-sm fixed top-0 left-0 w-full h-screen bg-secondary-800 bg-opacity-30 z-50">
         <div
           ref={ref as RefObject<HTMLDivElement>}
@@ -26,7 +28,8 @@ function Modal({ open, children, onClose, title }: ModalPropsType) {
           </div>
           {children}
         </div>
-      </div>
+      </div>,
+      document.body
     )
   );
 }
