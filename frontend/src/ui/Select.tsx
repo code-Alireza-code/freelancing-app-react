@@ -1,14 +1,16 @@
 import { HtmlHTMLAttributes } from "react";
-import { CategoryType } from "../types/categories";
 import { FieldErrors } from "react-hook-form";
-import { AddProjectFormDataType } from "../features/projects/CreateProjectForm";
 
 type SelectPropsType = {
   name: string;
   label?: string;
   className?: string;
-  options: CategoryType[];
-  errors: FieldErrors<AddProjectFormDataType>;
+  options: {
+    _id: string;
+    title: string;
+    [key: string]: unknown;
+  }[];
+  errors: FieldErrors;
   rest?: HtmlHTMLAttributes<HTMLSelectElement>;
 };
 
@@ -40,9 +42,9 @@ function Select({
           ))}
         </select>
       </div>
-      {errors && errors[name as keyof AddProjectFormDataType] && (
+      {errors && errors[name] && (
         <span className="text-error text-xs">
-          {errors[name as keyof AddProjectFormDataType]!.message}
+          {errors[name]!.message as string}
         </span>
       )}
     </>
