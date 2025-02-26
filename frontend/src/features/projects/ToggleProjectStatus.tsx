@@ -1,5 +1,5 @@
 import { ProjectType } from "../../types/projects";
-import { useUpdateProjectStatus } from "./useProject";
+import { useUpdateProjectStatus } from "./useProjects";
 import Toggle from "../../ui/Toggle";
 
 type ToggleProjectStatusPropsType = {

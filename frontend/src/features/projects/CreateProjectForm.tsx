@@ -6,7 +6,7 @@ import { TagsInput } from "react-tag-input-component";
 import DatePickerField from "../../ui/DatePickerField";
 import Select from "../../ui/Select";
 import { useGetAllCategories } from "../../hooks/useCategories";
-import { useCreateProject, useEditProject } from "./useProject";
+import { useCreateProject, useEditProject } from "./useProjects";
 import Loading from "../../ui/Loading";
 import { toEnglishNumbers } from "../../utils/toEnglishNumbers";
 import { ProjectType } from "../../types/projects";
