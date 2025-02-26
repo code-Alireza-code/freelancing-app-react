@@ -1,4 +1,5 @@
 import { AddProjectFormDataType } from "../features/projects/CreateProjectForm";
+import { StatusValueType } from "../features/projects/ToggleProjectStatus";
 import http from "./httpService";
 
 export async function getAllProjectsAPI() {
@@ -22,5 +23,17 @@ export async function editProjectAPI({
 }) {
   return http
     .patch(`project/update/${projectId}`, data)
+    .then(({ data }) => data.data);
+}
+
+export async function updateProjectStatusAPI({
+  data,
+  projectId,
+}: {
+  data: { status: StatusValueType };
+  projectId: string;
+}) {
+  return http
+    .patch(`/project/${projectId}`, data)
     .then(({ data }) => data.data);
 }

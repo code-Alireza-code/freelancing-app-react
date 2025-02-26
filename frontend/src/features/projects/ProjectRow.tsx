@@ -10,6 +10,7 @@ import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useRemoveProject } from "./useProject";
 import { TbPencilMinus } from "react-icons/tb";
 import CreateProjectForm from "./CreateProjectForm";
+import ToggleProjectStatus from "./ToggleProjectStatus";
 
 type ProjectRowPropsType = {
   project: ProjectType;
@@ -43,11 +44,7 @@ function ProjectRow({ project, index }: ProjectRowPropsType) {
       </td>
       <td>{project?.freelancer?.name || "---"}</td>
       <td>
-        {project.status === "OPEN" ? (
-          <span className="badge badge--success">باز</span>
-        ) : (
-          <span className="badge badge--danger">بسته</span>
-        )}
+        <ToggleProjectStatus project={project} />
       </td>
       <td>
         <div className="flex items-center gap-x-4">
@@ -56,16 +53,16 @@ function ProjectRow({ project, index }: ProjectRowPropsType) {
               <TbPencilMinus className="w-5 h-5 text-primary-900" />
             </button>
           </>
-            <Modal
-              title={`ویرایش ${project.title}`}
+          <Modal
+            title={`ویرایش ${project.title}`}
+            onClose={() => setIsEditOpen(false)}
+            open={isEditOpen}
+          >
+            <CreateProjectForm
               onClose={() => setIsEditOpen(false)}
-              open={isEditOpen}
-            >
-              <CreateProjectForm
-                onClose={() => setIsEditOpen(false)}
-                project={project}
-              />
-            </Modal>
+              project={project}
+            />
+          </Modal>
           <>
             <button onClick={() => setIsRemoveOpen(true)}>
               <FaRegTrashAlt className="w-5 h-5 text-error" />
