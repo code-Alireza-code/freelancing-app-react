@@ -1,5 +1,6 @@
 import UserAvatar from "../features/authentication/UserAvatar";
 import { useUser } from "../features/authentication/useUser";
+import HeaderMenu from "./HeaderMenu";
 
 function Header() {
   const { isLoadingUser } = useUser();
@@ -11,6 +12,7 @@ function Header() {
       `}
       >
         <UserAvatar />
+        <HeaderMenu />
       </div>
     </div>
   );
