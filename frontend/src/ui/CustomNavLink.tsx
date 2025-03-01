@@ -14,7 +14,7 @@ function CustomNavLink({ children, path }: CustomNavLinkPropsType) {
     <NavLink
       className={({ isActive }) =>
         `${navLinkClasses} ${
-          isActive && "!bg-primary-100/30 !text-primary-900"
+          isActive && "!bg-primary-100/80 !text-primary-900"
         }`
       }
       to={path}
