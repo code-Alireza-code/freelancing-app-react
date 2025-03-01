@@ -7,7 +7,10 @@ export function useDarkMode() {
     queryKey: ["theme"],
     queryFn: () => {
       const stored = localStorage.getItem("darkMode");
-      return stored ? JSON.parse(stored) : false;
+      if (stored !== null) {
+        return JSON.parse(stored);
+      }
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
     },
     staleTime: Infinity,
   });
