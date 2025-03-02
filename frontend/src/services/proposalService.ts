@@ -12,3 +12,7 @@ export async function ChangeProposalStatusAPI({
     .patch(`/proposal/${proposalId}`, data)
     .then(({ data }) => data.data);
 }
+
+export async function getAllProposalsAPI() {
+  return http.get("/proposal/list").then(({ data }) => data.data);
+}
