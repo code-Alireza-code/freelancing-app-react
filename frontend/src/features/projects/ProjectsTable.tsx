@@ -6,10 +6,9 @@ import { useOwnerProjects } from "./useProjects";
 import ProjectRow from "./ProjectRow";
 
 function ProjectsTable() {
-  const { data, isLoading } = useOwnerProjects();
-  const { projects } = data || {};
+  const { projects, isLoadingProjects } = useOwnerProjects();
 
-  if (isLoading) return <Loading />;
+  if (isLoadingProjects) return <Loading />;
   if (!projects.length) return <Empty resourceName="پروژه" />;
 
   return (

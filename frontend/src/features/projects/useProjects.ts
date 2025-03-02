@@ -9,8 +9,16 @@ import {
 import toast from "react-hot-toast";
 import { BackendError } from "../../types/error";
 
-export const useOwnerProjects = () =>
-  useQuery({ queryKey: ["owner-projects"], queryFn: getAllProjectsAPI });
+export const useOwnerProjects = () => {
+  const { data, isLoading: isLoadingProjects } = useQuery({
+    queryKey: ["owner-projects"],
+    queryFn: getAllProjectsAPI,
+  });
+
+  const { projects } = data || {};
+
+  return { projects, isLoadingProjects };
+};
 
 export const useRemoveProject = () => {
   const queryClient = useQueryClient();
