@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createProjectAPI,
   editProjectAPI,
-  getAllProjectsAPI,
+  getAllOwnerProjectsAPI,
   removeProjectAPI,
   updateProjectStatusAPI,
 } from "../../services/projectService";
@@ -12,7 +12,7 @@ import { BackendError } from "../../types/error";
 export const useOwnerProjects = () => {
   const { data, isLoading: isLoadingProjects } = useQuery({
     queryKey: ["owner-projects"],
-    queryFn: getAllProjectsAPI,
+    queryFn: getAllOwnerProjectsAPI,
   });
 
   const { projects } = data || {};

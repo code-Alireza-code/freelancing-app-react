@@ -2,7 +2,7 @@ import { AddProjectFormDataType } from "../features/projects/CreateProjectForm";
 import { StatusValueType } from "../features/projects/ToggleProjectStatus";
 import http from "./httpService";
 
-export async function getAllProjectsAPI() {
+export async function getAllOwnerProjectsAPI() {
   return http.get("/project/owner-projects").then(({ data }) => data.data);
 }
 
