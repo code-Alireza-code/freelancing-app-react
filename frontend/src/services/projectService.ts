@@ -41,3 +41,7 @@ export async function updateProjectStatusAPI({
 export async function getSingleProjectAPI(projectId: string) {
   return http.get(`/project/${projectId}`).then(({ data }) => data.data);
 }
+
+export async function getAllProjectsAPI() {
+  return http.get("/project/list").then(({ data }) => data.data);
+}
