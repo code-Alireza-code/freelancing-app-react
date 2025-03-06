@@ -1,8 +1,7 @@
 import { HTMLInputTypeAttribute } from "react";
-import { FieldErrors } from "react-hook-form";
-import { AddProjectFormDataType } from "../features/projects/CreateProjectForm";
+import { FieldErrors, FieldValues } from "react-hook-form";
 
-type TextFieldPropsType = {
+type TextFieldPropsType<T extends FieldValues> = {
   label?: string;
   type?: HTMLInputTypeAttribute;
   name: string;
@@ -11,10 +10,10 @@ type TextFieldPropsType = {
   className?: string;
   placeholder?: string;
   dir?: "ltr" | "rtl";
-  errors?: FieldErrors<AddProjectFormDataType> | null;
+  errors?: FieldErrors<T> | null;
 };
 
-function TextField({
+function TextField<T extends FieldValues>({
   label = "",
   type = "text",
   name,
@@ -24,7 +23,7 @@ function TextField({
   dir = "rtl",
   errors = null,
   ...rest
-}: TextFieldPropsType) {
+}: TextFieldPropsType<T>) {
   return (
     <>
       <div>
@@ -42,9 +41,9 @@ function TextField({
           {...rest}
         />
       </div>
-      {errors && errors[name as keyof AddProjectFormDataType] && (
+      {errors && errors[name as keyof T] && (
         <span className="text-error text-xs">
-          {errors[name as keyof AddProjectFormDataType]!.message}
+          {errors[name as keyof T]?.message as string}
         </span>
       )}
     </>
