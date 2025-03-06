@@ -53,7 +53,7 @@ function ChangeProposalStatus({
     formData: ProposalStatusFormDataType
   ) => {
     await changeStatus(
-      { data: formData, proposalId: proposalId },
+      { data: { ...formData, projectId: id as string }, proposalId },
       {
         onSuccess: () => onClose(),
       }

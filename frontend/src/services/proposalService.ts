@@ -2,13 +2,15 @@ import { CreateProposalFormDataType } from "./../features/proposals/CreatePropos
 import { ProposalStatusFormDataType } from "../features/project/ChangeProposalStatus";
 import http from "./httpService";
 
+type ChangeProposalStatusAPI = {
+  data: { projectId: string } & ProposalStatusFormDataType;
+  proposalId: string;
+};
+
 export async function ChangeProposalStatusAPI({
   data,
   proposalId,
-}: {
-  data: ProposalStatusFormDataType;
-  proposalId: string;
-}) {
+}: ChangeProposalStatusAPI) {
   return http
     .patch(`/proposal/${proposalId}`, data)
     .then(({ data }) => data.data);
