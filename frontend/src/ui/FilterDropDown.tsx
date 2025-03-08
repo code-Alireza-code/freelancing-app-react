@@ -1,10 +1,12 @@
 import { useSearchParams } from "react-router-dom";
-import { CategoryType } from "../types/categories";
 
 type FilterDropDownPropsType = {
-  options: CategoryType[];
+  options: {
+    label: string;
+    value: string;
+  }[];
   filterField: string;
-  defaultOption: { value: string; label: string };
+  defaultOption?: { value: string; label: string };
 };
 
 function FilterDropDown({
@@ -26,10 +28,12 @@ function FilterDropDown({
       value={value}
       onChange={handleChange}
     >
-      <option value={defaultOption.value}>{defaultOption.label}</option>
+      {defaultOption && (
+        <option value={defaultOption.value}>{defaultOption.label}</option>
+      )}
       {options?.map((item) => (
-        <option key={item._id} value={item.englishTitle}>
-          {item.title}
+        <option key={item.value} value={item.value}>
+          {item.label}
         </option>
       ))}
     </select>
