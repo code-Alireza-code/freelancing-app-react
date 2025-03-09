@@ -42,6 +42,6 @@ export async function getSingleProjectAPI(projectId: string) {
   return http.get(`/project/${projectId}`).then(({ data }) => data.data);
 }
 
-export async function getAllProjectsAPI() {
-  return http.get("/project/list").then(({ data }) => data.data);
+export async function getAllProjectsAPI(q: string = "") {
+  return http.get(`/project/list${q}`).then(({ data }) => data.data);
 }
