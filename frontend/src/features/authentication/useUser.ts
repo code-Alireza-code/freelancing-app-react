@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserProfileAPI, logoutUserAPI } from "../../services/authService";
 import toast from "react-hot-toast";
 import { BackendError } from "../../types/error";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { UserType } from "../../types/user";
 
 export function useUser() {
   const { data, isLoading: isLoadingUser } = useQuery({
@@ -11,7 +12,7 @@ export function useUser() {
     retry: false,
   });
 
-  const { user } = data || {};
+  const { user }: { user: UserType } = data || {};
 
   return { user, isLoadingUser };
 }
@@ -35,4 +36,18 @@ export function useLogoutUser() {
   });
 
   return { logout, isPending };
+}
+
+export function useAuthorize() {
+  const { user, isLoadingUser } = useUser();
+  const { pathname } = useLocation();
+
+  let isAuthenticated = false;
+  if (user) isAuthenticated = true;
+
+  let isAuthorized = false;
+  if (user && pathname.split("/")[1] === user.role.toLowerCase())
+    isAuthorized = true;
+
+  return { isAuthenticated, isAuthorized, isLoadingUser };
 }
