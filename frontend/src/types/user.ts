@@ -13,4 +13,8 @@ export interface UserType {
   email: string | null;
   name: string;
   avatarUrl: null | string;
+  otp?: {
+    code: number;
+    expiresIn: string;
+  };
 }

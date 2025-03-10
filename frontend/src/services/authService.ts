@@ -22,3 +22,7 @@ export async function getUserProfileAPI() {
 export async function logoutUserAPI() {
   return http.post("/user/logout").then(({ data }) => data.data);
 }
+
+export async function getAllUsersAPI() {
+  return http.get("/admin/user/list").then(({ data }) => data.data);
+}
