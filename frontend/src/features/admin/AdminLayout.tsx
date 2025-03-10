@@ -14,7 +14,7 @@ function AdminLayout() {
           <span>داشبورد</span>
         </CustomNavLink>
 
-        <CustomNavLink path="/admin/projects">
+        <CustomNavLink path="/admin/users">
           <HiUser />
           <span>کاربران</span>
         </CustomNavLink>

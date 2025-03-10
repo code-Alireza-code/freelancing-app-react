@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Auth from "./pages/Auth";
 import { Toaster } from "react-hot-toast";
@@ -19,6 +19,7 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import NotAccess from "./pages/NotAccess";
 import AdminLayout from "./features/admin/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
+import Users from "./pages/Users";
 
 function App() {
   const queryClient = new QueryClient();
@@ -68,6 +69,7 @@ function App() {
           >
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="users" element={<Users />} />
           </Route>
           <Route path="/not-access" element={<NotAccess />} />
           <Route path="/*" element={<NotFound />} />
