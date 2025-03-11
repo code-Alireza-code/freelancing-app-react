@@ -40,7 +40,7 @@ function SendOTPForm({ setPhoneNumber, setStep }: SendOTPFormPropsType) {
   };
 
   return (
-    <div className="p-8 border border-gray-200 rounded-lg">
+    <div className="p-8 border text-secondary-900 border-gray-200 dark:border-gray-700 rounded-lg">
       <div className="text-center text-2xl font-bold text-primary-900 mb-10">
         فریلنسینگ اپ
       </div>

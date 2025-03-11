@@ -91,7 +91,7 @@ function CheckOTPForm({ phoneNumber, onBack }: CheckOTPFormPropsType) {
   }, [time]);
 
   return (
-    <div className="p-8 border border-gray-200 rounded-lg">
+    <div className="p-8 border border-gray-200 dark:border-gray-700 text-secondary-900 rounded-lg">
       <div className=" relative flex items-center justify-center text-center text-2xl font-bold text-primary-900 mb-10">
         <span>فریلنسینگ اپ</span>
         <button
@@ -129,7 +129,7 @@ function CheckOTPForm({ phoneNumber, onBack }: CheckOTPFormPropsType) {
           <span className="text-xs text-error">{errors.otp.message}</span>
         )}
         {time > 0 ? (
-          <div className="text-sm text-gray-700">
+          <div className="text-sm text-secondary-600">
             {time} ثانیه تا ارسال مجدد کد
           </div>
         ) : (
