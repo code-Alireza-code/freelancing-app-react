@@ -1,10 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SendOTPForm from "./SendOTPForm";
 import CheckOTPForm from "./CheckOTPForm";
+import { useUser } from "./useUser";
+import { useNavigate } from "react-router-dom";
 
 function AuthContainer() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [step, setStep] = useState(1);
+  const { user } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate("/", { replace: true });
+  }, [user]);
 
   const renderStep = () => {
     switch (step) {

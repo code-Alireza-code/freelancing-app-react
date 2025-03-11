@@ -8,6 +8,9 @@ import { completeProfileAPI } from "../../services/authService";
 import toast from "react-hot-toast";
 import { BackendError } from "../../types/error";
 import Loading from "../../ui/Loading";
+import { useUser } from "./useUser";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const validationSchema = z.object({
   name: z.string().nonempty("نام و نام خانوادگی الزامی است !"),
@@ -33,6 +36,7 @@ function CompleteProfileForm() {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: completeProfileAPI,
   });
+  const navigate = useNavigate();
 
   const handleCompleteProfile = async (
     formData: CompleteProfileFormDataType
