@@ -1,3 +1,4 @@
+import { ChangeUserStatusFormDataType } from "../features/admin/users/ChangeUserStatusForm";
 import { CompleteProfileFormDataType } from "../features/authentication/CompleteProfileForm";
 import http from "./httpService";
 
@@ -25,4 +26,17 @@ export async function logoutUserAPI() {
 
 export async function getAllUsersAPI() {
   return http.get("/admin/user/list").then(({ data }) => data.data);
+}
+
+type ChangeUserStausAPIPropsType = {
+  data: ChangeUserStatusFormDataType;
+  userId: string;
+};
+export async function changeUserStausAPI({
+  data,
+  userId,
+}: ChangeUserStausAPIPropsType) {
+  return http
+    .patch(`/admin/user/verify/${userId}`, data)
+    .then(({ data }) => data.data);
 }

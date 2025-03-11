@@ -42,8 +42,9 @@ function UserRow({ user, index }: UserRowPropsType) {
       </td>
       <td>
         <button
-          className="underline underline-offset-4 text-primary-900 hover:no-underline"
+          className="underline underline-offset-4 text-primary-900 hover:no-underline disabled:cursor-not-allowed disabled:text-gray-600/50 disabled:no-underline disabled:dark:text-gray-200/50"
           onClick={() => setOpen(true)}
+          disabled={user.role === "ADMIN"}
         >
           تغییر وضعیت
         </button>
@@ -52,7 +53,10 @@ function UserRow({ user, index }: UserRowPropsType) {
           onClose={() => setOpen(false)}
           title={`تغییر وضعیت ${user.name}`}
         >
-          modal content
+          <ChangeUserStatusForm
+            userId={user._id}
+            onClose={() => setOpen(false)}
+          />
         </Modal>
       </td>
     </Table.Row>
