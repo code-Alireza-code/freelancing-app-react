@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUserProfileAPI, logoutUserAPI } from "../../services/authService";
+import {
+  checkOtpAPI,
+  getOtpAPI,
+  getUserProfileAPI,
+  logoutUserAPI,
+} from "../../services/authService";
 import toast from "react-hot-toast";
 import { BackendError } from "../../types/error";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -50,4 +55,52 @@ export function useAuthorize() {
     isAuthorized = true;
 
   return { isAuthenticated, isAuthorized, isLoadingUser };
+}
+
+export function useCheckOtp() {
+  const navigate = useNavigate();
+  const { mutateAsync: mutateCheckOtp, isPending: isCheckingOtp } = useMutation(
+    {
+      mutationFn: checkOtpAPI,
+      onSuccess: ({ user, message }: { user: UserType; message: string }) => {
+        toast.success(message);
+        if (!user.isActive)
+          return navigate("/complete-profile", { replace: true });
+        if (user.status !== 2) {
+          navigate("/");
+          toast("پروفایل شما در انتظار تایید است !");
+          return;
+        }
+        if (user.role === "OWNER") return navigate("/owner", { replace: true });
+        if (user.role === "FREELANCER")
+          return navigate("/freelancer", { replace: true });
+        if (user.role === "ADMIN") return navigate("/admin", { replace: true });
+      },
+      onError: (err: unknown) => {
+        toast.error(
+          (err as BackendError)?.response?.data?.message ||
+            "خطا در هنگام بررسی کد تایید"
+        );
+      },
+    }
+  );
+
+  return { mutateCheckOtp, isCheckingOtp };
+}
+
+export function useResendOtp() {
+  const { mutateAsync: mutateResendOtp, isPending: isResending } = useMutation({
+    mutationFn: getOtpAPI,
+    onSuccess: (data) => {
+      toast.success(data.message);
+    },
+    onError: (err: unknown) => {
+      toast.error(
+        (err as BackendError)?.response?.data?.message ||
+          "خطا در هنگام ارسال کد تایید"
+      );
+    },
+  });
+
+  return { mutateResendOtp, isResending };
 }

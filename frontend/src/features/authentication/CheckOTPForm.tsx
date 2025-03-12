@@ -3,14 +3,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import TextField from "../../ui/TextField";
 import { IoMdArrowRoundForward } from "react-icons/io";
-import { useMutation } from "@tanstack/react-query";
-import { checkOtpAPI, getOtpAPI } from "../../services/authService";
-import toast from "react-hot-toast";
-import { BackendError } from "../../types/error";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loading from "../../ui/Loading";
 import { MdEdit } from "react-icons/md";
+import { useCheckOtp, useResendOtp } from "./useUser";
 
 const validationSchema = z.object({
   otp: z.string().nonempty("کد تایید را وارد کنید"),
@@ -34,50 +30,18 @@ function CheckOTPForm({ phoneNumber, onBack }: CheckOTPFormPropsType) {
     resolver: zodResolver(validationSchema),
   });
   const [time, setTime] = useState(90);
-  const { mutateAsync: mutateCheckOtp, isPending: isCheckingOtp } = useMutation(
-    {
-      mutationFn: checkOtpAPI,
-    }
-  );
-  const navigate = useNavigate();
+
+  const { mutateCheckOtp, isCheckingOtp } = useCheckOtp();
 
   const handleCheckOTP = async (formData: CheckOTPFormDataType) => {
-    try {
-      const { user, message } = await mutateCheckOtp({
-        ...formData,
-        phoneNumber,
-      });
-      toast.success(message);
-      if (!user.isActive)
-        return navigate("/complete-profile", { replace: true });
-      if (user.status !== 2) {
-        navigate("/");
-        toast("پروفایل شما در انتظار تایید است !");
-        return;
-      }
-      if (user.role === "OWNER") return navigate("/owner", { replace: true });
-      if (user.role === "FREELANCER")
-        return navigate("/freelancer", { replace: true });
-    } catch (error) {
-      const err = error as BackendError;
-      toast.error(
-        err?.response?.data?.message || "خطا در هنگام بررسی کد تایید"
-      );
-    }
+    await mutateCheckOtp({ phoneNumber, ...formData });
   };
-  const { mutateAsync: mutateResendOtp } = useMutation({
-    mutationFn: getOtpAPI,
-  });
+
+  const { mutateResendOtp } = useResendOtp();
+
   const handleResendOtp = async () => {
-    try {
-      const data = await mutateResendOtp({ phoneNumber });
-      toast.success(data.message);
-    } catch (error) {
-      const err = error as BackendError;
-      toast.error(
-        err?.response?.data?.message || "خطا در هنگام ارسال کد تایید"
-      );
-    }
+    await mutateResendOtp({ phoneNumber });
+    setTime(90);
   };
 
   useEffect(() => {
