@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   checkOtpAPI,
+  completeProfileAPI,
   getOtpAPI,
   getUserProfileAPI,
   logoutUserAPI,
@@ -120,4 +121,31 @@ export function useSendOtp() {
   });
 
   return { mutateGetOtp, isGetting };
+}
+
+export function useCompleteProfile() {
+  const navigate = useNavigate();
+
+  const { mutateAsync: mutateCompleteProfile, isPending } = useMutation({
+    mutationFn: completeProfileAPI,
+    onSuccess: ({ user, message }) => {
+      toast.success(message);
+      if (user.status !== 2) {
+        navigate("/");
+        toast("پروفایل شما در انتظار تایید است !");
+        return;
+      }
+      if (user.role === "OWNER") return navigate("/owner", { replace: true });
+      if (user.role === "FREELANCER")
+        return navigate("/freelancer", { replace: true });
+    },
+    onError: (err: unknown) => {
+      toast.error(
+        (err as BackendError)?.response?.data?.message ||
+          "خطا در هنگام ارسال اطلاعات به سرور"
+      );
+    },
+  });
+
+  return { mutateCompleteProfile, isPending };
 }

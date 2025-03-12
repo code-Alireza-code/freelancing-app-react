@@ -3,14 +3,9 @@ import TextField from "../../ui/TextField";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import RadioInput from "../../ui/RadioInput";
-import { useMutation } from "@tanstack/react-query";
-import { completeProfileAPI } from "../../services/authService";
-import toast from "react-hot-toast";
-import { BackendError } from "../../types/error";
 import Loading from "../../ui/Loading";
-import { useUser } from "./useUser";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useCompleteProfile } from "./useUser";
+import { useDarkMode } from "../../hooks/useDarkMode";
 
 const validationSchema = z.object({
   name: z.string().nonempty("نام و نام خانوادگی الزامی است !"),
@@ -26,6 +21,7 @@ const validationSchema = z.object({
 export type CompleteProfileFormDataType = z.infer<typeof validationSchema>;
 
 function CompleteProfileForm() {
+  useDarkMode();
   const {
     register,
     handleSubmit,
@@ -33,35 +29,17 @@ function CompleteProfileForm() {
   } = useForm<CompleteProfileFormDataType>({
     resolver: zodResolver(validationSchema),
   });
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: completeProfileAPI,
-  });
-  const navigate = useNavigate();
+
+  const { mutateCompleteProfile, isPending } = useCompleteProfile();
 
   const handleCompleteProfile = async (
     formData: CompleteProfileFormDataType
   ) => {
-    try {
-      const { user, message } = await mutateAsync(formData);
-      toast.success(message);
-      if (user.status !== 2) {
-        navigate("/");
-        toast("پروفایل شما در انتظار تایید است !");
-        return;
-      }
-      if (user.role === "OWNER") return navigate("/owner", { replace: true });
-      if (user.role === "FREELANCER")
-        return navigate("/freelancer", { replace: true });
-    } catch (error) {
-      toast.error(
-        (error as BackendError)?.response?.data?.message ||
-          "خطا در هنگام ارسال اطلاعات به سرور"
-      );
-    }
+    await mutateCompleteProfile(formData);
   };
 
   return (
-    <div className="w-[500px] p-10 border mt-10 border-gray-200 rounded-lg">
+    <div className="w-[500px] p-10 border mt-10 border-gray-200 dark:border-gray-600 text-secondary-900 rounded-lg h-fit">
       <h1 className="text-2xl text-center mb-10">اطلاعات خود را تکمیل کنید</h1>
       <form
         noValidate
