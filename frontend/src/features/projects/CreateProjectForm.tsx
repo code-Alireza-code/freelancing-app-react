@@ -52,8 +52,7 @@ function CreateProjectForm({ onClose, project }: CreateProjectFormPropsType) {
     },
   });
 
-  const { data } = useGetAllCategories();
-  const { categories } = data || {};
+  const { categories } = useGetAllCategories();
 
   const editMode = Boolean(project);
   const { editProject, isEditing } = useEditProject();
