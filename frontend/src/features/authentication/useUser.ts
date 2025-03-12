@@ -104,3 +104,20 @@ export function useResendOtp() {
 
   return { mutateResendOtp, isResending };
 }
+
+export function useSendOtp() {
+  const { mutateAsync: mutateGetOtp, isPending: isGetting } = useMutation({
+    mutationFn: getOtpAPI,
+    onSuccess: (data) => {
+      toast.success(data.message);
+    },
+    onError: (err: unknown) => {
+      toast.error(
+        (err as BackendError)?.response?.data?.message ||
+          "خطا در هنگام ارسال کد تایید"
+      );
+    },
+  });
+
+  return { mutateGetOtp, isGetting };
+}

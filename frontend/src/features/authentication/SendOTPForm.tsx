@@ -2,11 +2,8 @@ import { useForm } from "react-hook-form";
 import TextField from "../../ui/TextField";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { getOtpAPI } from "../../services/authService";
-import toast from "react-hot-toast";
-import { BackendError } from "../../types/error";
 import Loading from "../../ui/Loading";
+import { useSendOtp } from "./useUser";
 
 type SendOTPFormPropsType = {
   setPhoneNumber: (phoneNumber: string) => void;
@@ -15,6 +12,7 @@ type SendOTPFormPropsType = {
 const validationSchema = z.object({
   phoneNumber: z.string().nonempty("*لطفا این قسمت را خالی نگذارید"),
 });
+
 type SendOTPFormDataType = z.infer<typeof validationSchema>;
 
 function SendOTPForm({ setPhoneNumber, setStep }: SendOTPFormPropsType) {
@@ -23,20 +21,16 @@ function SendOTPForm({ setPhoneNumber, setStep }: SendOTPFormPropsType) {
     formState: { errors },
     handleSubmit,
   } = useForm<SendOTPFormDataType>({ resolver: zodResolver(validationSchema) });
-  const { mutateAsync, isPending } = useMutation({ mutationFn: getOtpAPI });
+
+  const { mutateGetOtp, isGetting } = useSendOtp();
 
   const handleSendOTP = async (formData: SendOTPFormDataType) => {
-    try {
-      const data = await mutateAsync(formData);
-      toast.success(data.message);
-      setPhoneNumber(formData.phoneNumber);
-      setStep(2);
-    } catch (error) {
-      const err = error as BackendError;
-      toast.error(
-        err?.response?.data?.message || "خطا در هنگام ارسال کد تایید"
-      );
-    }
+    await mutateGetOtp(formData, {
+      onSuccess: () => {
+        setPhoneNumber(formData.phoneNumber);
+        setStep(2);
+      },
+    });
   };
 
   return (
@@ -62,7 +56,7 @@ function SendOTPForm({ setPhoneNumber, setStep }: SendOTPFormPropsType) {
             {errors.phoneNumber.message}
           </span>
         )}
-        {isPending ? (
+        {isGetting ? (
           <Loading />
         ) : (
           <button type="submit" className={`btn btn--primary w-full `}>
