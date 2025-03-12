@@ -4,7 +4,7 @@ import {
   HiOutlineViewGrid,
 } from "react-icons/hi";
 import { ProposalType } from "../../types/proposals";
-import Stat from "../owner/Stat";
+import Stat from "../../ui/Stat";
 import {
   toPersianNumbers,
   toPersianNumbersWithComma,

@@ -4,7 +4,7 @@ import {
   HiOutlineViewGrid,
 } from "react-icons/hi";
 import { ProjectType } from "../../types/projects";
-import Stat from "./Stat";
+import Stat from "../../ui/Stat";
 
 function Stats({ projects }: { projects: ProjectType[] }) {
   const numOfProjects = projects.length;

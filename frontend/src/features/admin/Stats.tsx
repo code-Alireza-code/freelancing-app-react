@@ -1,6 +1,6 @@
 import { HiUser } from "react-icons/hi2";
 import { toPersianNumbers } from "../../utils/toPersianNumbers";
-import Stat from "../owner/Stat";
+import Stat from "../../ui/Stat";
 import { HiCollection, HiOutlineViewGrid } from "react-icons/hi";
 
 type StatsPropsType = {
