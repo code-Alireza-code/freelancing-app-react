@@ -4,6 +4,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Loading from "../../ui/Loading";
 import { useSendOtp } from "./useUser";
+import { useEffect } from "react";
+import CustomToast from "../../ui/CustomToast";
 
 type SendOTPFormPropsType = {
   setPhoneNumber: (phoneNumber: string) => void;
@@ -22,6 +24,14 @@ function SendOTPForm({ setPhoneNumber, setStep }: SendOTPFormPropsType) {
     handleSubmit,
   } = useForm<SendOTPFormDataType>({ resolver: zodResolver(validationSchema) });
 
+  useEffect(() => {
+    CustomToast({
+      buttonLabel: "باشه",
+      label: "زبان کیبورد خود را به انگلیسی تغییر دهید",
+      duration: 4000,
+    });
+  }, []);
+
   const { mutateGetOtp, isGetting } = useSendOtp();
 
   const handleSendOTP = async (formData: SendOTPFormDataType) => {
@@ -34,7 +44,7 @@ function SendOTPForm({ setPhoneNumber, setStep }: SendOTPFormPropsType) {
   };
 
   return (
-    <div className="p-8 border text-secondary-900 border-gray-200 dark:border-gray-700 rounded-lg">
+    <div className="p-8 bg-secondary-50 border text-secondary-900 border-gray-200 dark:border-gray-700 rounded-lg">
       <div className="text-center text-2xl font-bold text-primary-900 mb-10">
         فریلنسینگ اپ
       </div>

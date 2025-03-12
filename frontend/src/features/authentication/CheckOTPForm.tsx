@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Loading from "../../ui/Loading";
 import { MdEdit } from "react-icons/md";
 import { useCheckOtp, useResendOtp } from "./useUser";
+import CustomToast from "../../ui/CustomToast";
 
 const validationSchema = z.object({
   otp: z.string().nonempty("کد تایید را وارد کنید"),
@@ -44,6 +45,12 @@ function CheckOTPForm({ phoneNumber, onBack }: CheckOTPFormPropsType) {
     setTime(90);
   };
 
+  useEffect(() => {
+    CustomToast({
+      buttonLabel: "باشه",
+      label: "زبان کیبورد خود را به انگلیسی تغییر دهید",
+    });
+  }, []);
   useEffect(() => {
     const timerId = setInterval(() => {
       setTime((t) => t - 1);
