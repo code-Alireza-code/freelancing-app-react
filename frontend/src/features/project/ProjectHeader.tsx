@@ -14,7 +14,9 @@ function ProjectHeader({ projectTitle }: ProjectHeaderPropsType) {
       <button onClick={moveBack}>
         <IoMdArrowRoundForward className="size-5 text-secondary-500" />
       </button>
-      <h1 className="font-semibold">لیست درخواست های {projectTitle}</h1>
+      <h1 className="font-semibold text-secondary-900">
+        لیست درخواست های {projectTitle}
+      </h1>
     </div>
   );
 }

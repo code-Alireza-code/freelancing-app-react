@@ -55,6 +55,7 @@ function UserRow({ user, index }: UserRowPropsType) {
         >
           <ChangeUserStatusForm
             userId={user._id}
+            userStatus={user.status}
             onClose={() => setOpen(false)}
           />
         </Modal>

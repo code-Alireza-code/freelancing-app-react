@@ -6,6 +6,7 @@ import Loading from "../../../ui/Loading";
 import { useChangeUserStatus } from "../useUsers";
 
 type ChangeUserStatusFormPropsType = {
+  userStatus: 0 | 1 | 2;
   userId: string;
   onClose: () => void;
 };
@@ -32,6 +33,7 @@ const validationSchema = z.object({
 export type ChangeUserStatusFormDataType = z.infer<typeof validationSchema>;
 
 function ChangeUserStatusForm({
+  userStatus,
   userId,
   onClose,
 }: ChangeUserStatusFormPropsType) {
@@ -41,6 +43,7 @@ function ChangeUserStatusForm({
     handleSubmit,
   } = useForm<ChangeUserStatusFormDataType>({
     resolver: zodResolver(validationSchema),
+    defaultValues: { status: String(userStatus) as "0" | "1" | "2" },
   });
   const { changeUserSatus, isChangingStatus } = useChangeUserStatus();
 

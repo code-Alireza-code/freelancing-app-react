@@ -76,7 +76,7 @@ function CreateProjectForm({ onClose, project }: CreateProjectFormPropsType) {
 
   return (
     <form
-      className="space-y-6"
+      className="space-y-6 text-secondary-900"
       noValidate
       onSubmit={handleSubmit(handleAddProject)}
     >
@@ -97,6 +97,7 @@ function CreateProjectForm({ onClose, project }: CreateProjectFormPropsType) {
         options={categories}
         {...register("category")}
         errors={errors}
+        defaultOption
       />
       <div>
         <label htmlFor="tags" className="">

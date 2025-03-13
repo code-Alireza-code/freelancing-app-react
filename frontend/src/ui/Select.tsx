@@ -1,16 +1,18 @@
 import { HtmlHTMLAttributes } from "react";
 import { FieldErrors } from "react-hook-form";
 
+interface OptionsType {
+  _id: string;
+  title: string;
+}
+
 type SelectPropsType = {
   name: string;
   label?: string;
   className?: string;
-  options: {
-    _id: string;
-    title: string;
-    [key: string]: unknown;
-  }[];
+  options: OptionsType[];
   errors: FieldErrors;
+  defaultOption?: boolean;
   rest?: HtmlHTMLAttributes<HTMLSelectElement>;
 };
 
@@ -20,6 +22,7 @@ function Select({
   className,
   options,
   errors,
+  defaultOption = false,
   ...rest
 }: SelectPropsType) {
   return (
@@ -34,7 +37,7 @@ function Select({
           id={name}
           className={`textField__input ${className}`}
         >
-          <option value="">یک دسته بندی انتخاب کنید</option>
+          {defaultOption && <option value="">یک گزینه را انتخاب کنید</option>}
           {options?.map((option) => (
             <option key={option._id} value={option._id}>
               {option.title}

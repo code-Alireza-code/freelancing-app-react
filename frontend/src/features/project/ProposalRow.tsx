@@ -58,6 +58,7 @@ function ProposalRow({ proposal, index }: ProposalRowPropsType) {
           open={open}
         >
           <ChangeProposalStatus
+            proposalStatus={proposal.status}
             proposalId={proposal._id}
             onClose={() => setOpen(false)}
           />

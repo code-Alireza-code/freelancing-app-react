@@ -28,11 +28,13 @@ const validationSchema = z.object({
 export type ProposalStatusFormDataType = z.infer<typeof validationSchema>;
 
 type ChangeProposalStatusPropsType = {
+  proposalStatus: 0 | 1 | 2;
   proposalId: string;
   onClose: () => void;
 };
 
 function ChangeProposalStatus({
+  proposalStatus,
   proposalId,
   onClose,
 }: ChangeProposalStatusPropsType) {
@@ -42,6 +44,7 @@ function ChangeProposalStatus({
     formState: { errors },
   } = useForm<ProposalStatusFormDataType>({
     resolver: zodResolver(validationSchema),
+    defaultValues: { status: String(proposalStatus) as "0" | "1" | "2" },
   });
   const { id } = useParams();
 
