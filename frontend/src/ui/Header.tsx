@@ -3,7 +3,7 @@ import { useUser } from "../features/authentication/useUser";
 import HeaderMenu from "./HeaderMenu";
 
 function Header() {
-  const { isLoadingUser } = useUser();
+  const { isLoadingUser, user } = useUser();
   return (
     <div className="bg-secondary-0 py-4 px-8 border-b border-secondary-200">
       <div
@@ -11,7 +11,7 @@ function Header() {
       ${isLoadingUser && "blur-sm opacity-50"}
       `}
       >
-        <UserAvatar />
+        {user && <UserAvatar />}
         <HeaderMenu />
       </div>
     </div>
