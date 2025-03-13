@@ -12,6 +12,7 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
       navigate("/auth", { replace: true });
     if (!isAuthorized && !isLoadingUser)
       navigate("/not-access", { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isAuthorized, isLoadingUser]);
 
   if (isLoadingUser)
