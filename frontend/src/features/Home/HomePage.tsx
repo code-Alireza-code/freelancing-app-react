@@ -4,6 +4,7 @@ import { useAuthorize, useUser } from "../authentication/useUser";
 
 function HomePage() {
   const { isAuthenticated, isAuthorized } = useAuthorize();
+  console.log({ isAuthenticated, isAuthorized });
   const { user } = useUser();
   const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ function HomePage() {
             به راحتی پروژه های خود را ثبت کنید و از بین درخواست های فریلنسرها
             مناسب ترین را انتخاب کنید‌!
           </p>
-          {isAuthenticated && isAuthorized ? (
+          {isAuthenticated ? (
             <button
               className="btn btn--primary"
               onClick={() =>

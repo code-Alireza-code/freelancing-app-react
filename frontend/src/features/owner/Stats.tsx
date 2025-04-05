@@ -5,6 +5,7 @@ import {
 } from "react-icons/hi";
 import { ProjectType } from "../../types/projects";
 import Stat from "../../ui/Stat";
+import { toPersianNumbers } from "../../utils/toPersianNumbers";
 
 function Stats({ projects }: { projects: ProjectType[] }) {
   const numOfProjects = projects.length;
@@ -19,18 +20,18 @@ function Stats({ projects }: { projects: ProjectType[] }) {
       <Stat
         className="bg-primary-100 text-primary-700"
         title="پروژه ها"
-        value={numOfProjects}
+        value={toPersianNumbers(numOfProjects.toString())}
         icon={<HiOutlineViewGrid className="size-20" />}
       />
       <Stat
         title="پروژه های واگذار شده"
-        value={numOfAcceptedProjects}
+        value={toPersianNumbers(numOfAcceptedProjects.toString())}
         icon={<HiCurrencyDollar className="size-20" />}
         color="green"
       />
       <Stat
         title="درخواست ها"
-        value={numOfProposals}
+        value={toPersianNumbers(numOfProposals.toString())}
         icon={<HiCollection className="size-20" />}
         color="yellow"
       />
