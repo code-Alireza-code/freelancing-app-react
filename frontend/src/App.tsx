@@ -14,7 +14,6 @@ import FreelancerDashboard from "./pages/FreelancerDashboard";
 import Proposals from "./pages/Proposals";
 import SubmittedProjects from "./pages/SubmittedProjects";
 import FreelancerLayout from "./features/freelancer/FreelancerLayout";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import NotAccess from "./pages/NotAccess";
 import AdminLayout from "./features/admin/AdminLayout";
@@ -28,7 +27,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <div className="">
         <Toaster />
-        <ReactQueryDevtools />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Auth />} />
